@@ -25,20 +25,54 @@ qr_panel.on("show", function() {
 
 require("sdk/context-menu").Item({
   label: "Convert URL to QR",
+  context: cm.PageContext(),
   contentScript: 'self.on("click", function (node, data) {' +
                  " self.postMessage(node.src);" +
                  '});',
   onMessage: function(src) {
-    show_qr_panel();
+    show_qr_panel(tabs.activeTab.url);
   }
-  });
+});
+
+require("sdk/context-menu").Item({
+  label: "Convert string to QR",
+  context: cm.SelectionContext(),
+  contentScript: 'self.on("click", function () {' +
+                 " self.postMessage(window.getSelection().toString());" +
+                 '});',
+  onMessage: function(src) {
+    console.log(src)
+    show_qr_panel(src);
+  }
+});
 
 function handleClick(state) {
-  show_qr_panel();
+  show_qr_panel(tabs.activeTab.url);
 }
 
-function show_qr_panel() {
-    console.log("Active Tab: " + tabs.activeTab.url)
-    qr_panel.contentURL = "https://chart.googleapis.com/chart?cht=qr&chs=320x320&chl=" + tabs.activeTab.url;
+function show_qr_panel(text) {
+    console.log("text: " + text)
+    console.log("text.length: " + text.length)
+    bytes = encodeURI(text).replace(/%[0-9A-F]{2}/g, '*').length
+    console.log("text.bytes: " + bytes)
+    if (bytes > 100)
+    {
+      height = 480
+      width = 480
+    }
+    else if (bytes > 50)
+    {
+      height = 360
+      width = 360
+    }
+    else
+    {
+      height = 240
+      width = 240
+    }
+    console.log("height: " + height)
+    console.log("width: " + width)
+    qr_panel.contentURL = "https://chart.googleapis.com/chart?cht=qr&chs=" + width + "x" + height + "&chl=" + text;
+    qr_panel.resize(width, height)
     qr_panel.show();
 }
