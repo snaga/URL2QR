@@ -1,0 +1,16 @@
+{
+  "title": "URL2QR",
+  "name": "url2qr",
+  "version": "0.0.1",
+  "description": "A basic add-on",
+  "main": "index.js",
+  "author": "Satoshi Nagayasu",
+  "engines": {
+    "firefox": ">=38.0a1",
+    "fennec": ">=38.0a1"
+  },
+  "license": "Mozilla Public License 2.0",
+  "keywords": [
+    "jetpack"
+  ]
+}
