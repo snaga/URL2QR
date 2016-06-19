@@ -72,7 +72,7 @@ function show_qr_panel(text) {
     }
     console.log("height: " + height)
     console.log("width: " + width)
-    qr_panel.contentURL = "https://chart.googleapis.com/chart?cht=qr&chs=" + width + "x" + height + "&chl=" + text;
+    qr_panel.contentURL = "https://chart.googleapis.com/chart?cht=qr&chs=" + width + "x" + height + "&chl=" + encodeURIComponent(text);
     qr_panel.resize(width, height)
     qr_panel.show();
 }
