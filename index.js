@@ -2,6 +2,10 @@ var buttons = require('sdk/ui/button/action');
 var tabs = require("sdk/tabs");
 var cm = require("sdk/context-menu");
 
+function debug(msg) {
+//  console.log(msg)
+}
+
 var button = buttons.ActionButton({
   id: "url2qr",
   label: "Convert URL to QR",
@@ -41,7 +45,7 @@ require("sdk/context-menu").Item({
                  " self.postMessage(window.getSelection().toString());" +
                  '});',
   onMessage: function(src) {
-    console.log(src)
+    debug(src)
     show_qr_panel(src);
   }
 });
@@ -51,10 +55,10 @@ function handleClick(state) {
 }
 
 function show_qr_panel(text) {
-    console.log("text: " + text)
-    console.log("text.length: " + text.length)
+    debug("text: " + text)
+    debug("text.length: " + text.length)
     bytes = encodeURI(text).replace(/%[0-9A-F]{2}/g, '*').length
-    console.log("text.bytes: " + bytes)
+    debug("text.bytes: " + bytes)
     if (bytes > 100)
     {
       height = 480
@@ -70,8 +74,8 @@ function show_qr_panel(text) {
       height = 240
       width = 240
     }
-    console.log("height: " + height)
-    console.log("width: " + width)
+    debug("height: " + height)
+    debug("width: " + width)
     qr_panel.contentURL = "https://chart.googleapis.com/chart?cht=qr&chs=" + width + "x" + height + "&chl=" + encodeURIComponent(text);
     qr_panel.resize(width, height)
     qr_panel.show();
