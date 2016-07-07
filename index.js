@@ -39,6 +39,32 @@ require("sdk/context-menu").Item({
 });
 
 require("sdk/context-menu").Item({
+  label: "Share this page on Twitter",
+  context: cm.PageContext(),
+  contentScript: 'self.on("click", function (node, data) {' +
+                 " self.postMessage(node.src);" +
+                 '});',
+  onMessage: function(src) {
+    var url = 'https://twitter.com/intent/tweet?text=' + encodeURI(tabs.activeTab.title) + '&url=' + encodeURI(tabs.activeTab.url);
+    tabs.open(url);
+  }
+});
+
+require("sdk/context-menu").Item({
+  label: "Share this page on Facebook",
+  context: cm.PageContext(),
+  contentScript: 'self.on("click", function (node, data) {' +
+                 " self.postMessage(node.src);" +
+                 '});',
+  onMessage: function(src) {
+    var url = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURI(tabs.activeTab.url);
+    tabs.open(url);
+  }
+});
+
+//&display=popup&ref=plugin&src=like&app_id=240825502976583
+
+require("sdk/context-menu").Item({
   label: "Convert string to QR",
   context: cm.SelectionContext(),
   contentScript: 'self.on("click", function () {' +
